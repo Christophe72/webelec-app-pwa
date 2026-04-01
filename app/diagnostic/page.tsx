@@ -32,7 +32,7 @@
  */
 
 import { useState } from "react";
-import { ThemeToggle } from "../theme-toggle";
+import { AppHeader } from "../app-header";
 import {
   TREE,
   ROOT_ID,
@@ -288,9 +288,11 @@ export default function DiagnosticPage() {
                      bg-gray-50 text-gray-900
                      dark:bg-gray-950 dark:text-white"
     >
-      {/* ── Header ── */}
+      <AppHeader />
+
+      {/* ── Sous-header diagnostic ── */}
       <header
-        className="flex items-center justify-between px-4 py-4
+        className="flex items-center justify-between px-4 py-3
                          border-b border-gray-100 dark:border-gray-900"
       >
         {history.length > 0 ? (
@@ -316,10 +318,7 @@ export default function DiagnosticPage() {
           </span>
         </div>
 
-        <ThemeToggle
-          variant="inline"
-          className="w-9 h-9 text-base shadow-sm border-gray-300 dark:border-gray-700"
-        />
+        <div className="w-9" />
       </header>
 
       {/* ── Content ── */}
