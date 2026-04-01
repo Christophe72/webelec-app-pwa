@@ -10,8 +10,8 @@ export default function Section() {
 
       <div className="flex items-center justify-center min-h-screen">
         <div className="p-8 text-center">
-          <h1>Calcul de sectioon</h1>
-          <p>This is a section page.</p>
+          <h1>Choix disjoncteur</h1>
+          <p>This is a disjoncteur page.</p>
         </div>
       </div>
     </div>
