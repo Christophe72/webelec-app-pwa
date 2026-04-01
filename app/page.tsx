@@ -7,6 +7,7 @@ const CARDS = [
   { href: "/diagnostic", label: "Diagnostic", icon: "🔍" },
   { href: "/section", label: "Section câble", icon: "⚡" },
   { href: "/calculs/disjoncteur", label: "Disjoncteur", icon: "🔌" },
+  { href: "/qcm", label: "QCM RGIE", icon: "📝" },
 ];
 
 export default function Home() {
@@ -19,8 +20,8 @@ export default function Home() {
         <Image
           src="/icon-512x512.png"
           alt="WebElec Logo"
-          width={192}
-          height={192}
+          width={384}
+          height={384}
           className={styles.logoImg}
           priority
         />

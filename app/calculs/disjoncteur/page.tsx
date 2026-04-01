@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { AppHeader } from "../../app-header";
 import { evaluerInstallation } from "./engine";
 import type {
@@ -87,42 +87,16 @@ export default function DisjoncteurPage() {
     sectionMm2: 2.5,
     circuit: "prises",
   });
-  const [resultat, setResultat] = useState<EvaluationInstallation | null>(null);
-  const [erreur, setErreur] = useState<string | null>(null);
-
-  function calculer() {
+  const resultat = useMemo<EvaluationInstallation | null>(() => {
     const puissanceW = Number(form.puissanceW);
     const tensionV = Number(form.tensionV);
     const longueurCableM = Number(form.longueurCableM);
-
     if (
-      !Number.isFinite(puissanceW) ||
-      !Number.isFinite(tensionV) ||
-      !Number.isFinite(longueurCableM)
-    ) {
-      setErreur("Entrer des valeurs numeriques valides.");
-      setResultat(null);
-      return;
-    }
-
-    if (puissanceW <= 0 || tensionV <= 0 || longueurCableM <= 0) {
-      setErreur("Puissance, tension et longueur doivent etre superieures a 0.");
-      setResultat(null);
-      return;
-    }
-
-    const input = {
-      puissanceW,
-      tensionV,
-      reseau: form.reseau,
-      sectionMm2: form.sectionMm2,
-      circuit: form.circuit,
-      longueurCableM,
-    };
-
-    setErreur(null);
-    setResultat(evaluerInstallation(input));
-  }
+      !Number.isFinite(puissanceW) || !Number.isFinite(tensionV) || !Number.isFinite(longueurCableM) ||
+      puissanceW <= 0 || tensionV <= 0 || longueurCableM <= 0
+    ) return null;
+    return evaluerInstallation({ puissanceW, tensionV, reseau: form.reseau, sectionMm2: form.sectionMm2, circuit: form.circuit, longueurCableM });
+  }, [form]);
 
   return (
     <main className="min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-white">
@@ -230,41 +204,45 @@ export default function DisjoncteurPage() {
 
           </div>
 
-          <button
-            type="button"
-            onClick={calculer}
-            className="mt-4 rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-500"
-          >
-            Calculer
-          </button>
-
-          {erreur ? <p className="mt-2 text-sm text-red-600">{erreur}</p> : null}
         </section>
 
         {resultat ? (
           <section className="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
-            <h2 className="mb-2 text-xl font-semibold">Resultat</h2>
-            <p>Intensite calculee: {resultat.intensiteCalculeeA.toFixed(2)} A</p>
-            <p>Disjoncteur conseille: {resultat.disjoncteurConseilleA} A</p>
-            <p>Limite RGIE: {resultat.disjoncteurMaxRgieA} A</p>
-            <p>Chute de tension: {resultat.chuteTensionV.toFixed(2)} V</p>
-            <p>
-              Chute de tension (%): {resultat.chuteTensionPourcent.toFixed(2)}%
-            </p>
-            <p
-              className={
-                resultat.conforme ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400 font-semibold"
-              }
-            >
-              Conforme: {resultat.conforme ? "Oui" : "Non"}
-            </p>
+            <h2 className="mb-3 text-xl font-semibold">Résultat</h2>
 
-            {/* <h3 className="mt-3 font-semibold">Messages</h3>
-            <ul className="list-disc pl-5">
-              {resultat.messages.map((message) => (
-                <li key={message}>{message}</li>
-              ))}
-            </ul> */}
+            {/* Disjoncteur conseillé — mis en avant */}
+            <div className="mb-4 rounded-xl border-2 border-blue-500 bg-blue-50 px-5 py-4 dark:bg-blue-950 dark:border-blue-400">
+              <p className="text-xs font-semibold uppercase tracking-widest text-blue-500 dark:text-blue-400 mb-1">
+                Disjoncteur conseillé
+              </p>
+              <p className="text-4xl font-extrabold text-blue-700 dark:text-blue-300 leading-none">
+                {resultat.disjoncteurConseilleA} A
+              </p>
+              <p className="mt-1 text-xs text-blue-500 dark:text-blue-400">
+                Limite RGIE : {resultat.disjoncteurMaxRgieA} A
+              </p>
+            </div>
+
+            {/* Autres métriques */}
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] gap-3">
+              <div className="rounded-lg bg-gray-50 dark:bg-gray-800 px-4 py-3">
+                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">Intensité calculée</p>
+                <p className="text-lg font-bold">{resultat.intensiteCalculeeA.toFixed(2)} A</p>
+              </div>
+
+              <div className="rounded-lg bg-gray-50 dark:bg-gray-800 px-4 py-3">
+                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">Chute de tension</p>
+                <p className="text-lg font-bold">{resultat.chuteTensionV.toFixed(2)} V</p>
+                <p className="text-xs text-gray-500">{resultat.chuteTensionPourcent.toFixed(2)} %</p>
+              </div>
+
+              <div className={`rounded-lg px-4 py-3 ${resultat.conforme ? "bg-green-50 dark:bg-green-950" : "bg-red-50 dark:bg-red-950"}`}>
+                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">Conformité RGIE</p>
+                <p className={`text-lg font-bold ${resultat.conforme ? "text-green-700 dark:text-green-300" : "text-red-700 dark:text-red-300"}`}>
+                  {resultat.conforme ? "✓ Conforme" : "✕ Non conforme"}
+                </p>
+              </div>
+            </div>
           </section>
         ) : null}
       </div>

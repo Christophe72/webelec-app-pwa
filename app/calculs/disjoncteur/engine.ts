@@ -30,8 +30,9 @@ export function evaluerInstallation(
     input.sectionMm2,
     input.reseau,
   );
+  const limiteChutePourcent = input.circuit === "eclairage" ? 3 : 5;
   const conformeDisjoncteur = disjoncteurConseilleA <= disjoncteurMaxRgieA;
-  const conformeChuteTension = chuteTensionPourcent <= 5;
+  const conformeChuteTension = chuteTensionPourcent <= limiteChutePourcent;
   const conforme = conformeDisjoncteur && conformeChuteTension;
 
   const messages = getMessagesRegles(input.sectionMm2, input.circuit);
@@ -44,7 +45,7 @@ export function evaluerInstallation(
   }
 
   if (!conformeChuteTension) {
-    messages.unshift("Chute de tension supérieure à 5% : non conforme");
+    messages.unshift(`Chute de tension supérieure à ${limiteChutePourcent}% : non conforme`);
   }
 
   return {

@@ -6,6 +6,7 @@ const MENU_ITEMS = [
   { href: "/diagnostic", label: "Diagnostic" },
   { href: "/section", label: "Section câble" },
   { href: "/calculs/disjoncteur", label: "Disjoncteur" },
+  { href: "/qcm", label: "QCM RGIE" },
 ];
 
 export function AppHeader() {
