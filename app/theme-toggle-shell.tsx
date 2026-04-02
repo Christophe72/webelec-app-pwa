@@ -1,14 +1,15 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import { ThemeToggle } from "./theme-toggle";
+import styles from "./theme-toggle-shell.module.css";
 
 export function ThemeToggleShell() {
-  const pathname = usePathname();
-
-  if (pathname === "/" || pathname.startsWith("/diagnostic")) {
-    return null;
-  }
-
-  return <ThemeToggle />;
+  return (
+    <div className={styles.dock}>
+      <ThemeToggle
+        variant="inline"
+        className="ring-1 ring-black/10 dark:ring-white/15"
+      />
+    </div>
+  );
 }

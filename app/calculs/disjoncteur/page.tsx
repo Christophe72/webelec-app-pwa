@@ -1,14 +1,10 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { AppHeader } from "../../app-header";
+import { ImageMenu } from "../../components/image-menu";
+import { MAIN_MENU_ITEMS } from "../../components/main-menu-items";
 import { evaluerInstallation } from "./engine";
-import type {
-  SectionCable,
-  TypeCircuit,
-  TypeReseau,
-} from "./types";
-
+import type { SectionCable, TypeCircuit, TypeReseau } from "./types";
 type EvaluationInstallation = ReturnType<typeof evaluerInstallation>;
 
 type FormState = {
@@ -92,18 +88,34 @@ export default function DisjoncteurPage() {
     const tensionV = Number(form.tensionV);
     const longueurCableM = Number(form.longueurCableM);
     if (
-      !Number.isFinite(puissanceW) || !Number.isFinite(tensionV) || !Number.isFinite(longueurCableM) ||
-      puissanceW <= 0 || tensionV <= 0 || longueurCableM <= 0
-    ) return null;
-    return evaluerInstallation({ puissanceW, tensionV, reseau: form.reseau, sectionMm2: form.sectionMm2, circuit: form.circuit, longueurCableM });
+      !Number.isFinite(puissanceW) ||
+      !Number.isFinite(tensionV) ||
+      !Number.isFinite(longueurCableM) ||
+      puissanceW <= 0 ||
+      tensionV <= 0 ||
+      longueurCableM <= 0
+    )
+      return null;
+    return evaluerInstallation({
+      puissanceW,
+      tensionV,
+      reseau: form.reseau,
+      sectionMm2: form.sectionMm2,
+      circuit: form.circuit,
+      longueurCableM: Number(form.longueurCableM),
+    });
   }, [form]);
 
   return (
     <main className="min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-white">
-      <AppHeader />
-
       <div className="mx-auto grid w-full max-w-3xl gap-4 px-4 py-8">
         <h1 className="text-2xl font-bold">Choix disjoncteur</h1>
+
+        <ImageMenu
+          items={MAIN_MENU_ITEMS}
+          delayStartMs={120}
+          delayStepMs={80}
+        />
 
         <section className="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
           <div className="grid gap-3 grid-cols-[repeat(auto-fit,minmax(180px,1fr))]">
@@ -138,72 +150,70 @@ export default function DisjoncteurPage() {
             />
 
             <label className="grid gap-1 text-sm">
-            Type reseau
-            <select
-              value={form.reseau}
-              onChange={(e) =>
-                setForm((prev) => ({
-                  ...prev,
-                  reseau: e.target.value as TypeReseau,
-                }))
-              }
-              className="w-full rounded-md border border-gray-300 px-2 py-1
+              Type reseau
+              <select
+                value={form.reseau}
+                onChange={(e) =>
+                  setForm((prev) => ({
+                    ...prev,
+                    reseau: e.target.value as TypeReseau,
+                  }))
+                }
+                className="w-full rounded-md border border-gray-300 px-2 py-1
                          dark:border-gray-700 dark:bg-gray-800 dark:text-white"
-            >
-              <option value="monophase">Monophase</option>
-              <option value="triphase">Triphase</option>
-            </select>
-          </label>
+              >
+                <option value="monophase">Monophase</option>
+                <option value="triphase">Triphase</option>
+              </select>
+            </label>
 
             <label className="grid gap-1 text-sm">
-            Section cable (mm²)
-            <select
-              value={String(form.sectionMm2)}
-              onChange={(e) =>
-                setForm((prev) => ({
-                  ...prev,
-                  sectionMm2: Number(e.target.value) as SectionCable,
-                }))
-              }
-              className="w-full rounded-md border border-gray-300 px-2 py-1
+              Section cable (mm²)
+              <select
+                value={String(form.sectionMm2)}
+                onChange={(e) =>
+                  setForm((prev) => ({
+                    ...prev,
+                    sectionMm2: Number(e.target.value) as SectionCable,
+                  }))
+                }
+                className="w-full rounded-md border border-gray-300 px-2 py-1
                          dark:border-gray-700 dark:bg-gray-800 dark:text-white"
-            >
-              <option value="0.75">0.75</option>
-              <option value="1.5">1.5</option>
-              <option value="2.5">2.5</option>
-              <option value="4">4</option>
-              <option value="6">6</option>
-              <option value="10">10</option>
-              <option value="16">16</option>
-              <option value="25">25</option>
-              <option value="35">35</option>
-              <option value="50">50</option>
-              <option value="70">70</option>
-            </select>
-          </label>
+              >
+                <option value="0.75">0.75</option>
+                <option value="1.5">1.5</option>
+                <option value="2.5">2.5</option>
+                <option value="4">4</option>
+                <option value="6">6</option>
+                <option value="10">10</option>
+                <option value="16">16</option>
+                <option value="25">25</option>
+                <option value="35">35</option>
+                <option value="50">50</option>
+                <option value="70">70</option>
+              </select>
+            </label>
 
             <label className="grid gap-1 text-sm">
-            Type circuit
-            <select
-              value={form.circuit}
-              onChange={(e) =>
-                setForm((prev) => ({
-                  ...prev,
-                  circuit: e.target.value as TypeCircuit,
-                }))
-              }
-              className="w-full rounded-md border border-gray-300 px-2 py-1
+              Type circuit
+              <select
+                value={form.circuit}
+                onChange={(e) =>
+                  setForm((prev) => ({
+                    ...prev,
+                    circuit: e.target.value as TypeCircuit,
+                  }))
+                }
+                className="w-full rounded-md border border-gray-300 px-2 py-1
                          dark:border-gray-700 dark:bg-gray-800 dark:text-white"
-            >
-              <option value="eclairage">Eclairage</option>
-              <option value="prises">Prises</option>
-              <option value="mixte">Mixte</option>
-              <option value="specifique">Specifique</option>
-            </select>
-          </label>
-
+              >
+                <option value="eclairage">Eclairage</option>
+                <option value="prises">Prises</option>
+                <option value="mixte">Mixte</option>
+                <option value="specifique">Specifique</option>
+              </select>
+            </label>
           </div>
-
         </section>
 
         {resultat ? (
@@ -226,19 +236,35 @@ export default function DisjoncteurPage() {
             {/* Autres métriques */}
             <div className="grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] gap-3">
               <div className="rounded-lg bg-gray-50 dark:bg-gray-800 px-4 py-3">
-                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">Intensité calculée</p>
-                <p className="text-lg font-bold">{resultat.intensiteCalculeeA.toFixed(2)} A</p>
+                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">
+                  Intensité calculée
+                </p>
+                <p className="text-lg font-bold">
+                  {resultat.intensiteCalculeeA.toFixed(2)} A
+                </p>
               </div>
 
               <div className="rounded-lg bg-gray-50 dark:bg-gray-800 px-4 py-3">
-                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">Chute de tension</p>
-                <p className="text-lg font-bold">{resultat.chuteTensionV.toFixed(2)} V</p>
-                <p className="text-xs text-gray-500">{resultat.chuteTensionPourcent.toFixed(2)} %</p>
+                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">
+                  Chute de tension
+                </p>
+                <p className="text-lg font-bold">
+                  {resultat.chuteTensionV.toFixed(2)} V
+                </p>
+                <p className="text-xs text-gray-500">
+                  {resultat.chuteTensionPourcent.toFixed(2)} %
+                </p>
               </div>
 
-              <div className={`rounded-lg px-4 py-3 ${resultat.conforme ? "bg-green-50 dark:bg-green-950" : "bg-red-50 dark:bg-red-950"}`}>
-                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">Conformité RGIE</p>
-                <p className={`text-lg font-bold ${resultat.conforme ? "text-green-700 dark:text-green-300" : "text-red-700 dark:text-red-300"}`}>
+              <div
+                className={`rounded-lg px-4 py-3 ${resultat.conforme ? "bg-green-50 dark:bg-green-950" : "bg-red-50 dark:bg-red-950"}`}
+              >
+                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">
+                  Conformité RGIE
+                </p>
+                <p
+                  className={`text-lg font-bold ${resultat.conforme ? "text-green-700 dark:text-green-300" : "text-red-700 dark:text-red-300"}`}
+                >
                   {resultat.conforme ? "✓ Conforme" : "✕ Non conforme"}
                 </p>
               </div>

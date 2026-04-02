@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { AppHeader } from "../app-header";
+import { ImageMenu } from "../components/image-menu";
+import { MAIN_MENU_ITEMS } from "../components/main-menu-items";
 import { QUESTIONS } from "./questions";
 import styles from "./page.module.css";
 
@@ -24,7 +25,9 @@ function getScoreLabel(correct: number, total: number) {
 export default function QcmPage() {
   const [current, setCurrent] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
-  const [answers, setAnswers] = useState<(number | null)[]>(Array(QUESTIONS.length).fill(null));
+  const [answers, setAnswers] = useState<(number | null)[]>(
+    Array(QUESTIONS.length).fill(null),
+  );
   const [finished, setFinished] = useState(false);
 
   const question = QUESTIONS[current];
@@ -62,20 +65,32 @@ export default function QcmPage() {
   if (finished) {
     return (
       <main className={styles.page}>
-        <AppHeader />
         <div className={styles.container}>
           <div>
             <h1 className={styles.title}>QCM RGIE</h1>
             <p className={styles.subtitle}>Résultats</p>
           </div>
 
+          <div className={styles.menuWrap}>
+            <ImageMenu
+              items={MAIN_MENU_ITEMS}
+              delayStartMs={120}
+              delayStepMs={80}
+            />
+          </div>
+
           <div className={styles.resultCard}>
-            <div className={`${styles.resultScore} ${niveau === "excellent" ? styles.resultScoreExcellent : niveau === "bien" ? styles.resultScoreBien : styles.resultScoreFaible}`}>
+            <div
+              className={`${styles.resultScore} ${niveau === "excellent" ? styles.resultScoreExcellent : niveau === "bien" ? styles.resultScoreBien : styles.resultScoreFaible}`}
+            >
               {score}/{QUESTIONS.length}
             </div>
-            <div className={styles.resultLabel}>{getScoreLabel(score, QUESTIONS.length)}</div>
+            <div className={styles.resultLabel}>
+              {getScoreLabel(score, QUESTIONS.length)}
+            </div>
             <div className={styles.resultSub}>
-              {score} bonne{score > 1 ? "s" : ""} réponse{score > 1 ? "s" : ""} sur {QUESTIONS.length} questions
+              {score} bonne{score > 1 ? "s" : ""} réponse{score > 1 ? "s" : ""}{" "}
+              sur {QUESTIONS.length} questions
             </div>
 
             <div className={styles.recapList}>
@@ -85,9 +100,15 @@ export default function QcmPage() {
                   <div key={q.id} className={styles.recapItem}>
                     <span className={styles.recapIcon}>{ok ? "✅" : "❌"}</span>
                     <span className={styles.recapText}>
-                      <strong>Q{i + 1}.</strong> {q.question.length > 70 ? q.question.slice(0, 70) + "…" : q.question}
+                      <strong>Q{i + 1}.</strong>{" "}
+                      {q.question.length > 70
+                        ? q.question.slice(0, 70) + "…"
+                        : q.question}
                       {!ok && (
-                        <> — <em>Réponse : {q.choices[q.answer]}</em></>
+                        <>
+                          {" "}
+                          — <em>Réponse : {q.choices[q.answer]}</em>
+                        </>
                       )}
                     </span>
                   </div>
@@ -95,7 +116,11 @@ export default function QcmPage() {
               })}
             </div>
 
-            <button type="button" onClick={handleRestart} className={styles.restartBtn}>
+            <button
+              type="button"
+              onClick={handleRestart}
+              className={styles.restartBtn}
+            >
               Recommencer le QCM
             </button>
           </div>
@@ -107,11 +132,20 @@ export default function QcmPage() {
   // ── Écran question ────────────────────────────────────
   return (
     <main className={styles.page}>
-      <AppHeader />
       <div className={styles.container}>
         <div>
           <h1 className={styles.title}>QCM RGIE</h1>
-          <p className={styles.subtitle}>Testez vos connaissances du règlement général</p>
+          <p className={styles.subtitle}>
+            Testez vos connaissances du règlement général
+          </p>
+        </div>
+
+        <div className={styles.menuWrap}>
+          <ImageMenu
+            items={MAIN_MENU_ITEMS}
+            delayStartMs={120}
+            delayStepMs={80}
+          />
         </div>
 
         {/* Barre de progression */}
@@ -119,7 +153,10 @@ export default function QcmPage() {
           {QUESTIONS.map((_, i) => {
             let cls = styles.progressSeg;
             if (answers[i] !== null) {
-              cls = answers[i] === QUESTIONS[i].answer ? styles.progressSegCorrect : styles.progressSegWrong;
+              cls =
+                answers[i] === QUESTIONS[i].answer
+                  ? styles.progressSegCorrect
+                  : styles.progressSegWrong;
             } else if (i === current) {
               cls = styles.progressSegActive;
             }
@@ -131,7 +168,9 @@ export default function QcmPage() {
         <div className={styles.card} key={current}>
           <div className={styles.qMeta}>
             <span className={styles.qCategorie}>{question.categorie}</span>
-            <span className={styles.qCounter}>{current + 1} / {QUESTIONS.length}</span>
+            <span className={styles.qCounter}>
+              {current + 1} / {QUESTIONS.length}
+            </span>
           </div>
 
           <p className={styles.question}>{question.question}</p>
@@ -141,7 +180,7 @@ export default function QcmPage() {
               let mod = "";
               if (answered) {
                 if (idx === question.answer) mod = styles.choiceBtnCorrect;
-                else if (idx === selected)   mod = styles.choiceBtnWrong;
+                else if (idx === selected) mod = styles.choiceBtnWrong;
               }
 
               return (
@@ -155,7 +194,11 @@ export default function QcmPage() {
                   <span className={styles.choiceLetter}>{LETTERS[idx]}</span>
                   {answered && (
                     <span className={styles.choiceIcon}>
-                      {idx === question.answer ? "✓" : idx === selected ? "✕" : ""}
+                      {idx === question.answer
+                        ? "✓"
+                        : idx === selected
+                          ? "✕"
+                          : ""}
                     </span>
                   )}
                   {choice}
@@ -167,11 +210,19 @@ export default function QcmPage() {
           {answered && (
             <>
               <div className={styles.explication}>
-                <strong>{isCorrect ? "✅ Correct — " : "❌ Incorrect — "}</strong>
+                <strong>
+                  {isCorrect ? "✅ Correct — " : "❌ Incorrect — "}
+                </strong>
                 {question.explication}
               </div>
-              <button type="button" onClick={handleNext} className={styles.nextBtn}>
-                {current < QUESTIONS.length - 1 ? "Question suivante →" : "Voir les résultats"}
+              <button
+                type="button"
+                onClick={handleNext}
+                className={styles.nextBtn}
+              >
+                {current < QUESTIONS.length - 1
+                  ? "Question suivante →"
+                  : "Voir les résultats"}
               </button>
             </>
           )}

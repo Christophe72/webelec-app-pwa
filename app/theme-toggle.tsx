@@ -39,11 +39,13 @@ export function ThemeToggle({
       data-theme-toggle
       data-theme-toggle-variant={variant}
       className={`${variant === "floating" ? "fixed bottom-5 right-5 z-50" : ""}
-                 w-11 h-11 rounded-full shadow-lg
+                 w-12 h-12 rounded-full shadow-lg
                  flex items-center justify-center text-xl select-none
-                 bg-white border border-gray-200 text-gray-700 hover:bg-gray-100
-                 dark:bg-gray-800 dark:border-gray-700 dark:text-yellow-300 dark:hover:bg-gray-700
-                 transition-colors ${className}`}
+                 bg-sky-50 border border-sky-200 text-sky-900 hover:bg-sky-100
+                 dark:bg-slate-800 dark:border-slate-600 dark:text-yellow-300 dark:hover:bg-slate-700
+                 transition-colors focus-visible:outline-none focus-visible:ring-2
+                 focus-visible:ring-blue-500 focus-visible:ring-offset-2
+                 dark:focus-visible:ring-blue-400 ${className}`}
     >
       {dark ? "☀" : "☾"}
     </button>

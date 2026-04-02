@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { AppHeader } from "../app-header";
+import { ImageMenu } from "../components/image-menu";
+import { MAIN_MENU_ITEMS } from "../components/main-menu-items";
 import { calculerSection } from "./engine";
 import type { ModePose, TypeCircuit, TypeReseau } from "./types";
 import styles from "./page.module.css";
@@ -75,7 +76,14 @@ function NumberField({ label, value, step, min, onChange }: NumberFieldProps) {
     <label className={styles.fieldLabel}>
       {label}
       <div className={styles.fieldRow}>
-        <button type="button" onClick={() => adjust(-step)} className={styles.stepBtn} aria-label={`Diminuer ${label}`}>−</button>
+        <button
+          type="button"
+          onClick={() => adjust(-step)}
+          className={styles.stepBtn}
+          aria-label={`Diminuer ${label}`}
+        >
+          −
+        </button>
         <input
           type="number"
           min={min}
@@ -84,7 +92,14 @@ function NumberField({ label, value, step, min, onChange }: NumberFieldProps) {
           onChange={(e) => onChange(e.target.value)}
           className={styles.fieldInput}
         />
-        <button type="button" onClick={() => adjust(step)} className={styles.stepBtn} aria-label={`Augmenter ${label}`}>+</button>
+        <button
+          type="button"
+          onClick={() => adjust(step)}
+          className={styles.stepBtn}
+          aria-label={`Augmenter ${label}`}
+        >
+          +
+        </button>
       </div>
     </label>
   );
@@ -115,10 +130,22 @@ export default function SectionPage() {
     const tensionV = Number(form.tensionV);
     const longueurCableM = Number(form.longueurCableM);
     if (
-      !Number.isFinite(puissanceW) || !Number.isFinite(tensionV) || !Number.isFinite(longueurCableM) ||
-      puissanceW <= 0 || tensionV <= 0 || longueurCableM <= 0
-    ) return null;
-    return calculerSection({ puissanceW, tensionV, longueurCableM, reseau: form.reseau, circuit: form.circuit, modePose: form.modePose });
+      !Number.isFinite(puissanceW) ||
+      !Number.isFinite(tensionV) ||
+      !Number.isFinite(longueurCableM) ||
+      puissanceW <= 0 ||
+      tensionV <= 0 ||
+      longueurCableM <= 0
+    )
+      return null;
+    return calculerSection({
+      puissanceW,
+      tensionV,
+      longueurCableM,
+      reseau: form.reseau,
+      circuit: form.circuit,
+      modePose: form.modePose,
+    });
   }, [form]);
 
   const incoherent = !isCoherent(form.reseau, form.tensionV);
@@ -135,16 +162,22 @@ export default function SectionPage() {
     A1: "Encastré en paroi isolante",
     B1: "Conduit en saillie",
     B2: "Conduit encastré",
-    C:  "Fixé sur paroi",
-    E:  "À l'air libre",
+    C: "Fixé sur paroi",
+    E: "À l'air libre",
   };
 
   return (
     <main className={styles.page}>
-      <AppHeader />
-
       <div className={styles.container}>
         <h1 className={styles.title}>Calcul de section de câble</h1>
+
+        <div className={styles.menuWrap}>
+          <ImageMenu
+            items={MAIN_MENU_ITEMS}
+            delayStartMs={120}
+            delayStepMs={80}
+          />
+        </div>
 
         {/* ── Formulaire ── */}
         <div className={styles.card}>
@@ -161,7 +194,9 @@ export default function SectionPage() {
               Type réseau
               <select
                 value={form.reseau}
-                onChange={(e) => handleReseauChange(e.target.value as TypeReseau)}
+                onChange={(e) =>
+                  handleReseauChange(e.target.value as TypeReseau)
+                }
                 className={styles.fieldSelect}
               >
                 <option value="monophase">Monophasé</option>
@@ -175,9 +210,10 @@ export default function SectionPage() {
                 type="number"
                 min={1}
                 value={form.tensionV}
-                onChange={(e) => setForm((p) => ({ ...p, tensionV: e.target.value }))}
-                className={styles.fieldInput}
-                style={{ padding: "0.375rem 0.5rem" }}
+                onChange={(e) =>
+                  setForm((p) => ({ ...p, tensionV: e.target.value }))
+                }
+                className={`${styles.fieldInput} ${styles.fieldInputCompact}`}
               />
             </label>
 
@@ -193,7 +229,12 @@ export default function SectionPage() {
               Type circuit
               <select
                 value={form.circuit}
-                onChange={(e) => setForm((p) => ({ ...p, circuit: e.target.value as TypeCircuit }))}
+                onChange={(e) =>
+                  setForm((p) => ({
+                    ...p,
+                    circuit: e.target.value as TypeCircuit,
+                  }))
+                }
                 className={styles.fieldSelect}
               >
                 <option value="eclairage">Éclairage</option>
@@ -207,7 +248,12 @@ export default function SectionPage() {
               Mode de pose
               <select
                 value={form.modePose}
-                onChange={(e) => setForm((p) => ({ ...p, modePose: e.target.value as ModePose }))}
+                onChange={(e) =>
+                  setForm((p) => ({
+                    ...p,
+                    modePose: e.target.value as ModePose,
+                  }))
+                }
                 className={styles.fieldSelect}
               >
                 <option value="A1">A1 — Paroi isolante</option>
@@ -217,35 +263,45 @@ export default function SectionPage() {
                 <option value="E">E — Air libre</option>
               </select>
               <span className={styles.poseNote}>
-                {MODE_POSE_LABELS[form.modePose]} · pris en compte dans le calcul thermique
+                {MODE_POSE_LABELS[form.modePose]} · pris en compte dans le
+                calcul thermique
               </span>
             </label>
           </div>
 
           {/* Warning incohérence tension/réseau */}
           {incoherent && (
-            <div className={styles.warning} style={{ marginTop: "0.875rem" }}>
-              ⚠️ Tension inhabituelle pour un réseau {form.reseau === "monophase" ? "monophasé (230 V)" : "triphasé (400 V)"}. Vérifier la valeur.
+            <div className={`${styles.warning} ${styles.warningSpaced}`}>
+              ⚠️ Tension inhabituelle pour un réseau{" "}
+              {form.reseau === "monophase"
+                ? "monophasé (230 V)"
+                : "triphasé (400 V)"}
+              . Vérifier la valeur.
             </div>
           )}
-
         </div>
 
         {/* ── Résultats ── */}
         {resultat && verdict && chuteStatut && (
           <div className={styles.resultat}>
-
             {/* 1. Verdict principal */}
-            <div className={`${styles.verdict} ${styles[`verdict--${verdict}`]}`}>
+            <div
+              className={`${styles.verdict} ${styles[`verdict--${verdict}`]}`}
+            >
               <span className={styles.verdictIcon}>
                 {verdict === "ok" ? "✅" : verdict === "limite" ? "⚠️" : "❌"}
               </span>
               <div>
                 <div className={styles.verdictLabel}>
-                  {verdict === "ok" ? "Conforme RGIE" : verdict === "limite" ? "Conforme — Limite" : "Non conforme"}
+                  {verdict === "ok"
+                    ? "Conforme RGIE"
+                    : verdict === "limite"
+                      ? "Conforme — Limite"
+                      : "Non conforme"}
                 </div>
                 <div className={styles.verdictSub}>
-                  Section {resultat.sectionRecommandee} mm² · {resultat.intensiteCalculeeA.toFixed(1)} A calculés
+                  Section {resultat.sectionRecommandee} mm² ·{" "}
+                  {resultat.intensiteCalculeeA.toFixed(1)} A calculés
                 </div>
               </div>
             </div>
@@ -254,40 +310,61 @@ export default function SectionPage() {
             <div className={styles.metricsGrid}>
               <div className={styles.metric}>
                 <div className={styles.metricLabel}>Intensité calculée</div>
-                <div className={styles.metricValue}>{resultat.intensiteCalculeeA.toFixed(2)} A</div>
+                <div className={styles.metricValue}>
+                  {resultat.intensiteCalculeeA.toFixed(2)} A
+                </div>
               </div>
 
               <div className={`${styles.metric} ${styles.metricSection}`}>
                 <div className={styles.metricLabel}>Section recommandée</div>
-                <div className={`${styles.metricValue} ${styles.metricSectionValue}`}>
+                <div
+                  className={`${styles.metricValue} ${styles.metricSectionValue}`}
+                >
                   {resultat.sectionRecommandee} mm²
                 </div>
-                <div className={styles.metricSub}>Capacité : {resultat.capaciteSectionA} A</div>
+                <div className={styles.metricSub}>
+                  Capacité : {resultat.capaciteSectionA} A
+                </div>
               </div>
 
               <div className={styles.metric}>
                 <div className={styles.metricLabel}>Chute de tension</div>
-                <div className={`${styles.metricValue} ${styles[`chute--${chuteStatut}`]}`}>
+                <div
+                  className={`${styles.metricValue} ${styles[`chute--${chuteStatut}`]}`}
+                >
                   {resultat.chuteTensionPourcent.toFixed(2)}%
                 </div>
                 <div className={styles.metricSub}>
                   {resultat.chuteTensionV.toFixed(2)} V ·{" "}
-                  {chuteStatut === "ok" ? "✓ OK" : chuteStatut === "limite" ? "⚠ Limite" : "✕ Trop élevée"}
+                  {chuteStatut === "ok"
+                    ? "✓ OK"
+                    : chuteStatut === "limite"
+                      ? "⚠ Limite"
+                      : "✕ Trop élevée"}
                 </div>
               </div>
 
               <div className={styles.metric}>
                 <div className={styles.metricLabel}>Capacité section</div>
-                <div className={styles.metricValue}>{resultat.capaciteSectionA} A</div>
-                <div className={styles.metricSub}>Réserve : {(resultat.capaciteSectionA - resultat.intensiteCalculeeA).toFixed(1)} A</div>
+                <div className={styles.metricValue}>
+                  {resultat.capaciteSectionA} A
+                </div>
+                <div className={styles.metricSub}>
+                  Réserve :{" "}
+                  {(
+                    resultat.capaciteSectionA - resultat.intensiteCalculeeA
+                  ).toFixed(1)}{" "}
+                  A
+                </div>
               </div>
             </div>
 
             {/* 3. Conclusion métier */}
-            <div className={`${styles.conclusion} ${styles[`conclusion--${verdict}`]}`}>
+            <div
+              className={`${styles.conclusion} ${styles[`conclusion--${verdict}`]}`}
+            >
               {getConclusionTexte(verdict)}
             </div>
-
           </div>
         )}
       </div>

@@ -32,7 +32,8 @@
  */
 
 import { useState } from "react";
-import { AppHeader } from "../app-header";
+import { ImageMenu } from "../components/image-menu";
+import { MAIN_MENU_ITEMS } from "../components/main-menu-items";
 import {
   TREE,
   ROOT_ID,
@@ -288,8 +289,6 @@ export default function DiagnosticPage() {
                      bg-gray-50 text-gray-900
                      dark:bg-gray-950 dark:text-white"
     >
-      <AppHeader />
-
       {/* ── Sous-header diagnostic ── */}
       <header
         className="flex items-center justify-between px-4 py-3
@@ -323,6 +322,11 @@ export default function DiagnosticPage() {
 
       {/* ── Content ── */}
       <div className="flex-1 flex flex-col gap-5 px-4 py-6 w-full max-w-3xl mx-auto">
+        <ImageMenu
+          items={MAIN_MENU_ITEMS}
+          delayStartMs={120}
+          delayStepMs={90}
+        />
         <ProgressBar done={history.length} total={history.length + 3} />
         <button
           onClick={restart}

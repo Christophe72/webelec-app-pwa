@@ -45,7 +45,9 @@ export function evaluerInstallation(
   }
 
   if (!conformeChuteTension) {
-    messages.unshift(`Chute de tension supérieure à ${limiteChutePourcent}% : non conforme`);
+    messages.unshift(
+      `Chute de tension supérieure à ${limiteChutePourcent}% : non conforme`,
+    );
   }
 
   return {
@@ -54,6 +56,7 @@ export function evaluerInstallation(
     disjoncteurMaxRgieA,
     chuteTensionV,
     chuteTensionPourcent,
+    longueurCableM: input.longueurCableM,
     conforme,
     messages,
   };
