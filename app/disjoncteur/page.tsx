@@ -2,6 +2,8 @@ import React from "react";
 import { ThemeToggle } from "../theme-toggle";
 
 export default function Section() {
+  const tension: number = 230 | 380; // Example tension value
+  const puissance: number = 1000; // Example puissance value
   return (
     <div className="relative min-h-screen">
       <div className="absolute top-4 right-4">
