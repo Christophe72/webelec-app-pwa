@@ -120,6 +120,23 @@
   gap: 0.375rem;
 }
 
+.detailsPanel {
+  width: 18.5rem;
+  flex-shrink: 0;
+  overflow-y: auto;
+  border-left: 1px solid #e2e8f0;
+  background: #ffffff;
+  padding: 0.75rem 0.625rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+:global(.dark) .detailsPanel {
+  background: #1e293b;
+  border-left-color: #334155;
+}
+
 :global(.dark) .sidebar {
   background: #1e293b;
   border-right-color: #334155;
@@ -203,6 +220,49 @@
   height: 1600px;
 }
 
+.gridViewport {
+  position: relative;
+  width: var(--zw, 2400px);
+  height: var(--zh, 1600px);
+}
+
+.gridInner {
+  transform: scale(var(--zoom, 1));
+  transform-origin: top left;
+}
+
+.backgroundLayer {
+  position: absolute;
+  left: var(--bgx, 0px);
+  top: var(--bgy, 0px);
+  opacity: var(--bg-opacity, 0.45);
+  width: 2400px;
+  height: 1600px;
+  background-image: var(--bg-url);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: top left;
+  z-index: 1;
+}
+
+.linksLayer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.commandLink {
+  stroke: #f59e0b;
+  stroke-width: 2;
+  stroke-dasharray: 7 5;
+}
+
+.circuitLink {
+  stroke: #2563eb;
+  stroke-width: 2.5;
+}
+
 /* ── Éléments posés ────────────────────────────────── */
 .element {
   position: absolute;
@@ -223,6 +283,7 @@
     background 0.1s;
   color: #1e293b;
   box-sizing: border-box;
+  z-index: 3;
 }
 
 :global(.dark) .element {
@@ -241,6 +302,153 @@
 .elementSelected {
   border-color: #2563eb !important;
   background: rgba(219, 234, 254, 0.55) !important;
+}
+
+.elementRef {
+  position: absolute;
+  bottom: -1.1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.625rem;
+  line-height: 1;
+  padding: 0.1rem 0.2rem;
+  border-radius: 0.25rem;
+  background: rgba(255, 255, 255, 0.9);
+  color: #1e293b;
+  border: 1px solid #cbd5e1;
+  white-space: nowrap;
+}
+
+:global(.dark) .elementRef {
+  background: rgba(15, 23, 42, 0.92);
+  color: #e2e8f0;
+  border-color: #334155;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.76rem;
+  color: #475569;
+}
+
+:global(.dark) .field {
+  color: #cbd5e1;
+}
+
+.field input,
+.field select {
+  border: 1px solid #cbd5e1;
+  border-radius: 0.375rem;
+  padding: 0.4rem 0.5rem;
+  font-size: 0.8rem;
+  color: #0f172a;
+  background: #f8fafc;
+}
+
+:global(.dark) .field input,
+:global(.dark) .field select {
+  background: #0f172a;
+  border-color: #334155;
+  color: #e2e8f0;
+}
+
+.helperText {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.76rem;
+  color: #334155;
+}
+
+:global(.dark) .checkboxLabel {
+  color: #cbd5e1;
+}
+
+.zoomRow {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.zoomValue {
+  min-width: 3.5rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: #475569;
+}
+
+:global(.dark) .zoomValue {
+  color: #cbd5e1;
+}
+
+.fileInput {
+  width: 100%;
+  font-size: 0.72rem;
+}
+
+.inlineLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.76rem;
+  color: #475569;
+}
+
+.metric {
+  font-size: 0.74rem;
+  color: #334155;
+}
+
+:global(.dark) .metric {
+  color: #cbd5e1;
+}
+
+.checkList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.checkOk {
+  margin: 0;
+  font-size: 0.74rem;
+  color: #166534;
+}
+
+.checkItem {
+  text-align: left;
+  font-size: 0.74rem;
+  border: 1px solid #fecaca;
+  border-radius: 0.375rem;
+  background: #fff1f2;
+  color: #9f1239;
+  padding: 0.35rem 0.45rem;
+  cursor: pointer;
+}
+
+.linkList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.linkItem {
+  border: 1px solid #e2e8f0;
+  border-radius: 0.375rem;
+  padding: 0.35rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem;
+  font-size: 0.73rem;
 }
 
 :global(.dark) .elementSelected {

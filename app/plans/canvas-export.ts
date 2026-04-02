@@ -47,7 +47,7 @@ function drawSymbol(
   ctx.lineJoin = "round";
 
   switch (type) {
-    case "lampe": {
+    case "point_lumineux": {
       // sym-pl
       ctx.beginPath();
       ctx.arc(32, 32, 18, 0, Math.PI * 2);
@@ -104,7 +104,7 @@ function drawSymbol(
       ctx.fill();
       break;
     }
-    case "va-et-vient": {
+    case "va_et_vient": {
       ctx.beginPath();
       ctx.arc(8, 32, 4, 0, Math.PI * 2);
       ctx.fill();
@@ -124,42 +124,6 @@ function drawSymbol(
       ctx.fill();
       break;
     }
-    case "dj": {
-      // sym-dj
-      canvasRoundRect(ctx, 16, 12, 32, 40, 4);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(22, 24);
-      ctx.lineTo(42, 24);
-      ctx.moveTo(22, 34);
-      ctx.lineTo(42, 34);
-      ctx.moveTo(32, 12);
-      ctx.lineTo(32, 6);
-      ctx.moveTo(32, 52);
-      ctx.lineTo(32, 58);
-      ctx.stroke();
-      break;
-    }
-    case "ddr": {
-      // sym-ddr
-      canvasRoundRect(ctx, 14, 12, 36, 40, 4);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(20, 24);
-      ctx.lineTo(44, 24);
-      ctx.moveTo(20, 34);
-      ctx.lineTo(44, 34);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(32, 40);
-      ctx.bezierCurveTo(38, 40, 42, 44, 42, 50);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(42, 50);
-      ctx.lineTo(36, 50);
-      ctx.stroke();
-      break;
-    }
     case "rj45": {
       // sym-rj45
       canvasRoundRect(ctx, 12, 12, 40, 40, 6);
@@ -174,60 +138,12 @@ function drawSymbol(
       ctx.stroke();
       break;
     }
-    case "tv": {
-      // sym-tv
-      canvasRoundRect(ctx, 12, 12, 40, 40, 6);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.arc(32, 32, 6, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.arc(32, 32, 2, 0, Math.PI * 2);
-      ctx.fill();
-      break;
-    }
-    case "detecteur-fumee": {
-      // sym-detecteur-fumee
-      ctx.beginPath();
-      ctx.arc(32, 32, 20, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(22, 28);
-      ctx.lineTo(42, 28);
-      ctx.moveTo(22, 34);
-      ctx.lineTo(42, 34);
-      ctx.stroke();
-      break;
-    }
-    case "sonnette": {
-      // sym-sonnette
-      ctx.beginPath();
-      ctx.arc(32, 42, 12, Math.PI, 0);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(18, 42);
-      ctx.lineTo(46, 42);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.arc(32, 46, 2, 0, Math.PI * 2);
-      ctx.fill();
-      break;
-    }
-    case "boite-deriv": {
+    case "boite_derivation": {
       // sym-boite-deriv
       ctx.strokeRect(16, 16, 32, 32);
       ctx.beginPath();
       ctx.arc(32, 32, 3, 0, Math.PI * 2);
       ctx.fill();
-      break;
-    }
-    case "poussoir": {
-      // sym-poussoir
-      canvasRoundRect(ctx, 18, 18, 28, 28, 4);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.arc(32, 32, 6, 0, Math.PI * 2);
-      ctx.stroke();
       break;
     }
   }

@@ -9,7 +9,7 @@ export function ElementIcon({ type, size = 24 }: ElementIconProps) {
   const s = size;
 
   switch (type) {
-    case "lampe":
+    case "point_lumineux":
       return (
         <svg
           width={s}
@@ -79,7 +79,7 @@ export function ElementIcon({ type, size = 24 }: ElementIconProps) {
         </svg>
       );
 
-    case "va-et-vient":
+    case "va_et_vient":
       return (
         <svg
           width={s}
@@ -95,40 +95,6 @@ export function ElementIcon({ type, size = 24 }: ElementIconProps) {
           <path d="M12 32L56 46" />
           <circle cx="56" cy="18" r="4" fill="currentColor" stroke="none" />
           <circle cx="56" cy="46" r="4" fill="currentColor" stroke="none" />
-        </svg>
-      );
-
-    case "dj":
-      return (
-        <svg
-          width={s}
-          height={s}
-          viewBox="0 0 64 64"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="3"
-          strokeLinecap="round"
-        >
-          <rect x="16" y="12" width="32" height="40" rx="4" />
-          <path d="M22 24h20M22 34h20M32 12v-6M32 52v6" />
-        </svg>
-      );
-
-    case "ddr":
-      return (
-        <svg
-          width={s}
-          height={s}
-          viewBox="0 0 64 64"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="3"
-          strokeLinecap="round"
-        >
-          <rect x="14" y="12" width="36" height="40" rx="4" />
-          <path d="M20 24h24M20 34h24" />
-          <path d="M32 40c6 0 10 4 10 10" />
-          <path d="M42 50h-6" />
         </svg>
       );
 
@@ -149,56 +115,7 @@ export function ElementIcon({ type, size = 24 }: ElementIconProps) {
         </svg>
       );
 
-    case "tv":
-      return (
-        <svg
-          width={s}
-          height={s}
-          viewBox="0 0 64 64"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="3"
-        >
-          <rect x="12" y="12" width="40" height="40" rx="6" />
-          <circle cx="32" cy="32" r="6" />
-          <circle cx="32" cy="32" r="2" fill="currentColor" stroke="none" />
-        </svg>
-      );
-
-    case "detecteur-fumee":
-      return (
-        <svg
-          width={s}
-          height={s}
-          viewBox="0 0 64 64"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="3"
-          strokeLinecap="round"
-        >
-          <circle cx="32" cy="32" r="20" />
-          <path d="M22 28h20M22 34h20" />
-        </svg>
-      );
-
-    case "sonnette":
-      return (
-        <svg
-          width={s}
-          height={s}
-          viewBox="0 0 64 64"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="3"
-          strokeLinecap="round"
-        >
-          <path d="M20 42a12 12 0 0 1 24 0" />
-          <path d="M18 42h28" />
-          <circle cx="32" cy="46" r="2" fill="currentColor" stroke="none" />
-        </svg>
-      );
-
-    case "boite-deriv":
+    case "boite_derivation":
       return (
         <svg
           width={s}
@@ -210,21 +127,6 @@ export function ElementIcon({ type, size = 24 }: ElementIconProps) {
         >
           <rect x="16" y="16" width="32" height="32" />
           <circle cx="32" cy="32" r="3" fill="currentColor" stroke="none" />
-        </svg>
-      );
-
-    case "poussoir":
-      return (
-        <svg
-          width={s}
-          height={s}
-          viewBox="0 0 64 64"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="3"
-        >
-          <rect x="18" y="18" width="28" height="28" rx="4" />
-          <circle cx="32" cy="32" r="6" />
         </svg>
       );
 
