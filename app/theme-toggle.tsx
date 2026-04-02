@@ -22,9 +22,13 @@ export function ThemeToggle({
   function toggle() {
     const root = document.documentElement;
     const next = !root.classList.contains("dark");
+
+    root.classList.add("theme-switching");
     root.classList.toggle("dark", next);
     localStorage.setItem("theme", next ? "dark" : "light");
     setDark(next);
+
+    setTimeout(() => root.classList.remove("theme-switching"), 2000);
   }
 
   return (

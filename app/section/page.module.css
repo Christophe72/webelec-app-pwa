@@ -1,0 +1,382 @@
+/* ── Keyframes ─────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Layout ────────────────────────────────────────────── */
+.page {
+  min-height: 100svh;
+  background: #f4f5f7;
+  color: #1a1a1a;
+}
+
+:global(.dark) .page {
+  background: #090c12;
+  color: #ededed;
+}
+
+.container {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 52rem;
+  padding: 2rem 1rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* ── Titre ─────────────────────────────────────────────── */
+.title {
+  font-size: 1.375rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* ── Blocs génériques ──────────────────────────────────── */
+.card {
+  background: #ffffff;
+  border: 1px solid #e2e4e8;
+  border-radius: 0.875rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+:global(.dark) .card {
+  background: #141720;
+  border-color: #2a2d35;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+
+/* ── Grille de champs ──────────────────────────────────── */
+.fieldGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+  gap: 0.875rem;
+}
+
+.fieldLabel {
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #4a5268;
+}
+
+:global(.dark) .fieldLabel {
+  color: #8b95a8;
+}
+
+.fieldRow {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.fieldInput {
+  width: 100%;
+  border-radius: 0.4rem;
+  border: 1px solid #d1d5db;
+  padding: 0.375rem 0.5rem;
+  font-size: 0.875rem;
+  background: #fff;
+  color: inherit;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.fieldInput::-webkit-inner-spin-button,
+.fieldInput::-webkit-outer-spin-button { appearance: none; }
+
+:global(.dark) .fieldInput {
+  background: #1e2130;
+  border-color: #3a3d48;
+  color: #ededed;
+}
+
+.fieldSelect {
+  width: 100%;
+  border-radius: 0.4rem;
+  border: 1px solid #d1d5db;
+  padding: 0.375rem 0.5rem;
+  font-size: 0.875rem;
+  background: #fff;
+  color: inherit;
+}
+
+:global(.dark) .fieldSelect {
+  background: #1e2130;
+  border-color: #3a3d48;
+  color: #ededed;
+}
+
+.stepBtn {
+  flex-shrink: 0;
+  width: 2.125rem;
+  height: 2.125rem;
+  border-radius: 0.4rem;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s ease;
+  color: inherit;
+}
+
+.stepBtn:hover { background: #f0f1f3; }
+
+:global(.dark) .stepBtn {
+  background: #1e2130;
+  border-color: #3a3d48;
+}
+
+:global(.dark) .stepBtn:hover { background: #252836; }
+
+/* ── Warning incohérence ───────────────────────────────── */
+.warning {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 0.875rem;
+  border-radius: 0.5rem;
+  background: #fff8e6;
+  border: 1px solid #f5c842;
+  font-size: 0.8125rem;
+  color: #7a5800;
+}
+
+:global(.dark) .warning {
+  background: #2a2210;
+  border-color: #7a5800;
+  color: #f5c842;
+}
+
+/* ── Mode de pose info ─────────────────────────────────── */
+.poseNote {
+  font-size: 0.75rem;
+  color: #7a8394;
+  margin-top: 0.25rem;
+}
+
+/* ── Bouton calculer ───────────────────────────────────── */
+.calcBtn {
+  margin-top: 1rem;
+  padding: 0.625rem 1.5rem;
+  border-radius: 0.5rem;
+  background: #1d6fe8;
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(29,111,232,0.28);
+  transition: background 0.15s ease, transform 0.12s ease, box-shadow 0.15s ease;
+}
+
+.calcBtn:hover {
+  background: #1660d2;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(29,111,232,0.36);
+}
+
+.calcBtn:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+/* ── Erreur ────────────────────────────────────────────── */
+.erreur {
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  color: #dc2626;
+}
+
+/* ── Bloc résultat animé ───────────────────────────────── */
+.resultat {
+  animation: fadeUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ── Verdict principal ─────────────────────────────────── */
+.verdict {
+  border-radius: 0.875rem;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border: 1px solid;
+}
+
+.verdict--ok {
+  background: #f0faf4;
+  border-color: #86efac;
+  color: #14532d;
+}
+
+.verdict--limite {
+  background: #fffbeb;
+  border-color: #fcd34d;
+  color: #78350f;
+}
+
+.verdict--ko {
+  background: #fef2f2;
+  border-color: #fca5a5;
+  color: #7f1d1d;
+}
+
+:global(.dark) .verdict--ok {
+  background: #052e16;
+  border-color: #166534;
+  color: #86efac;
+}
+
+:global(.dark) .verdict--limite {
+  background: #1c1400;
+  border-color: #92400e;
+  color: #fcd34d;
+}
+
+:global(.dark) .verdict--ko {
+  background: #1f0a0a;
+  border-color: #991b1b;
+  color: #fca5a5;
+}
+
+.verdictIcon {
+  font-size: 2rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.verdictLabel {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.verdictSub {
+  font-size: 0.8125rem;
+  margin-top: 0.2rem;
+  opacity: 0.8;
+}
+
+/* ── Grille de métriques ───────────────────────────────── */
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.75rem;
+}
+
+.metric {
+  background: #f7f8fa;
+  border: 1px solid #e2e4e8;
+  border-radius: 0.625rem;
+  padding: 0.875rem 1rem;
+}
+
+:global(.dark) .metric {
+  background: #1a1d26;
+  border-color: #2a2d35;
+}
+
+.metricLabel {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #6b7280;
+  margin-bottom: 0.3rem;
+}
+
+:global(.dark) .metricLabel {
+  color: #6b7280;
+}
+
+.metricValue {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.metricSub {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 0.2rem;
+}
+
+/* Couleurs chute de tension */
+.chute--ok    { color: #16a34a; }
+.chute--limite { color: #d97706; }
+.chute--ko    { color: #dc2626; }
+
+:global(.dark) .chute--ok    { color: #4ade80; }
+:global(.dark) .chute--limite { color: #fbbf24; }
+:global(.dark) .chute--ko    { color: #f87171; }
+
+/* Section mise en avant */
+.metricSection {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+:global(.dark) .metricSection {
+  background: #0d1b3e;
+  border-color: #1e3a8a;
+}
+
+.metricSectionValue {
+  color: #1d4ed8;
+}
+
+:global(.dark) .metricSectionValue {
+  color: #93c5fd;
+}
+
+/* ── Conclusion métier ─────────────────────────────────── */
+.conclusion {
+  border-radius: 0.625rem;
+  padding: 0.875rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  border-left: 3px solid;
+}
+
+.conclusion--ok {
+  background: #f0faf4;
+  border-left-color: #16a34a;
+  color: #166534;
+}
+
+.conclusion--limite {
+  background: #fffbeb;
+  border-left-color: #d97706;
+  color: #78350f;
+}
+
+.conclusion--ko {
+  background: #fef2f2;
+  border-left-color: #dc2626;
+  color: #7f1d1d;
+}
+
+:global(.dark) .conclusion--ok {
+  background: #052e16;
+  border-left-color: #16a34a;
+  color: #86efac;
+}
+
+:global(.dark) .conclusion--limite {
+  background: #1c1400;
+  border-left-color: #d97706;
+  color: #fcd34d;
+}
+
+:global(.dark) .conclusion--ko {
+  background: #1f0a0a;
+  border-left-color: #dc2626;
+  color: #fca5a5;
+}
