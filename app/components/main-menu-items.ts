@@ -26,6 +26,12 @@ export const MAIN_MENU_ITEMS: ImageMenuItem[] = [
     imageAlt: "Icône questionnaire",
   },
   {
+    href: "/plans",
+    label: "Plans",
+    imageSrc: "/menu/plans.svg",
+    imageAlt: "Icône plans électriques",
+  },
+  {
     href: "/",
     label: "Quitter",
     imageSrc: "/menu/quitter.svg",
