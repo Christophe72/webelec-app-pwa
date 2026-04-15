@@ -11,6 +11,7 @@ type FormState = {
   puissanceW: string;
   tensionV: string;
   longueurCableM: string;
+  temperatureC: string;
   reseau: TypeReseau;
   sectionMm2: SectionCable;
   circuit: TypeCircuit;
@@ -79,6 +80,7 @@ export default function DisjoncteurPage() {
     puissanceW: "3500",
     tensionV: "230",
     longueurCableM: "25",
+    temperatureC: "30",
     reseau: "monophase",
     sectionMm2: 2.5,
     circuit: "prises",
@@ -87,10 +89,12 @@ export default function DisjoncteurPage() {
     const puissanceW = Number(form.puissanceW);
     const tensionV = Number(form.tensionV);
     const longueurCableM = Number(form.longueurCableM);
+    const temperatureC = Number(form.temperatureC);
     if (
       !Number.isFinite(puissanceW) ||
       !Number.isFinite(tensionV) ||
       !Number.isFinite(longueurCableM) ||
+      !Number.isFinite(temperatureC) ||
       puissanceW <= 0 ||
       tensionV <= 0 ||
       longueurCableM <= 0
@@ -103,174 +107,201 @@ export default function DisjoncteurPage() {
       sectionMm2: form.sectionMm2,
       circuit: form.circuit,
       longueurCableM: Number(form.longueurCableM),
+      temperatureC,
     });
   }, [form]);
 
   return (
-    <main className="min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-white">
-      <div className="mx-auto grid w-full max-w-3xl gap-4 px-4 py-8">
-        <h1 className="text-2xl font-bold">Choix disjoncteur</h1>
+    <main className="min-h-screen flex flex-col bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-white">
+      <header className="flex items-center justify-center px-4 py-3 border-b border-gray-100 dark:border-gray-900">
+        <div className="flex flex-col items-center gap-0.5">
+          <span className="font-bold text-sm text-gray-900 dark:text-white">
+            Choix disjoncteur
+          </span>
+          <span className="text-xs text-gray-400 dark:text-gray-500">
+            Dimensionnement et conformité RGIE
+          </span>
+        </div>
+      </header>
 
-        <ImageMenu
-          items={MAIN_MENU_ITEMS}
-          delayStartMs={120}
-          delayStepMs={80}
-        />
-
-        <section className="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
-          <div className="grid gap-3 grid-cols-[repeat(auto-fit,minmax(180px,1fr))]">
-            <NumberField
-              label="Puissance (W)"
-              value={form.puissanceW}
-              min={1}
-              step={100}
-              onChange={(next) =>
-                setForm((prev) => ({ ...prev, puissanceW: next }))
-              }
+      <div className="flex-1 w-full max-w-6xl mx-auto px-4 py-6">
+        <div className="grid gap-5 items-start md:grid-cols-[14rem_minmax(0,1fr)]">
+          <aside className="md:sticky md:top-4">
+            <ImageMenu
+              items={MAIN_MENU_ITEMS}
+              delayStartMs={120}
+              delayStepMs={80}
+              orientation="vertical"
             />
+          </aside>
 
-            <NumberField
-              label="Tension (V)"
-              value={form.tensionV}
-              min={1}
-              step={10}
-              onChange={(next) =>
-                setForm((prev) => ({ ...prev, tensionV: next }))
-              }
-            />
+          <div className="grid gap-4 min-w-0">
+            <section className="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
+              <div className="grid gap-3 grid-cols-[repeat(auto-fit,minmax(180px,1fr))]">
+                <NumberField
+                  label="Puissance (W)"
+                  value={form.puissanceW}
+                  min={1}
+                  step={100}
+                  onChange={(next) =>
+                    setForm((prev) => ({ ...prev, puissanceW: next }))
+                  }
+                />
 
-            <NumberField
-              label="Longueur cable (m)"
-              value={form.longueurCableM}
-              min={1}
-              step={1}
-              onChange={(next) =>
-                setForm((prev) => ({ ...prev, longueurCableM: next }))
-              }
-            />
+                <NumberField
+                  label="Tension (V)"
+                  value={form.tensionV}
+                  min={1}
+                  step={10}
+                  onChange={(next) =>
+                    setForm((prev) => ({ ...prev, tensionV: next }))
+                  }
+                />
 
-            <label className="grid gap-1 text-sm">
-              Type reseau
-              <select
-                value={form.reseau}
-                onChange={(e) =>
-                  setForm((prev) => ({
-                    ...prev,
-                    reseau: e.target.value as TypeReseau,
-                  }))
-                }
-                className="w-full rounded-md border border-gray-300 px-2 py-1
+                <NumberField
+                  label="Longueur cable (m)"
+                  value={form.longueurCableM}
+                  min={1}
+                  step={1}
+                  onChange={(next) =>
+                    setForm((prev) => ({ ...prev, longueurCableM: next }))
+                  }
+                />
+
+                <NumberField
+                  label="Temperature (°C)"
+                  value={form.temperatureC}
+                  min={-20}
+                  step={1}
+                  onChange={(next) =>
+                    setForm((prev) => ({ ...prev, temperatureC: next }))
+                  }
+                />
+
+                <label className="grid gap-1 text-sm">
+                  Type reseau
+                  <select
+                    value={form.reseau}
+                    onChange={(e) =>
+                      setForm((prev) => ({
+                        ...prev,
+                        reseau: e.target.value as TypeReseau,
+                      }))
+                    }
+                    className="w-full rounded-md border border-gray-300 px-2 py-1
                          dark:border-gray-700 dark:bg-gray-800 dark:text-white"
-              >
-                <option value="monophase">Monophase</option>
-                <option value="triphase">Triphase</option>
-              </select>
-            </label>
+                  >
+                    <option value="monophase">Monophase</option>
+                    <option value="triphase">Triphase</option>
+                  </select>
+                </label>
 
-            <label className="grid gap-1 text-sm">
-              Section cable (mm²)
-              <select
-                value={String(form.sectionMm2)}
-                onChange={(e) =>
-                  setForm((prev) => ({
-                    ...prev,
-                    sectionMm2: Number(e.target.value) as SectionCable,
-                  }))
-                }
-                className="w-full rounded-md border border-gray-300 px-2 py-1
+                <label className="grid gap-1 text-sm">
+                  Section cable (mm²)
+                  <select
+                    value={String(form.sectionMm2)}
+                    onChange={(e) =>
+                      setForm((prev) => ({
+                        ...prev,
+                        sectionMm2: Number(e.target.value) as SectionCable,
+                      }))
+                    }
+                    className="w-full rounded-md border border-gray-300 px-2 py-1
                          dark:border-gray-700 dark:bg-gray-800 dark:text-white"
-              >
-                <option value="0.75">0.75</option>
-                <option value="1.5">1.5</option>
-                <option value="2.5">2.5</option>
-                <option value="4">4</option>
-                <option value="6">6</option>
-                <option value="10">10</option>
-                <option value="16">16</option>
-                <option value="25">25</option>
-                <option value="35">35</option>
-                <option value="50">50</option>
-                <option value="70">70</option>
-              </select>
-            </label>
+                  >
+                    <option value="0.75">0.75</option>
+                    <option value="1.5">1.5</option>
+                    <option value="2.5">2.5</option>
+                    <option value="4">4</option>
+                    <option value="6">6</option>
+                    <option value="10">10</option>
+                    <option value="16">16</option>
+                    <option value="25">25</option>
+                    <option value="35">35</option>
+                    <option value="50">50</option>
+                    <option value="70">70</option>
+                  </select>
+                </label>
 
-            <label className="grid gap-1 text-sm">
-              Type circuit
-              <select
-                value={form.circuit}
-                onChange={(e) =>
-                  setForm((prev) => ({
-                    ...prev,
-                    circuit: e.target.value as TypeCircuit,
-                  }))
-                }
-                className="w-full rounded-md border border-gray-300 px-2 py-1
+                <label className="grid gap-1 text-sm">
+                  Type circuit
+                  <select
+                    value={form.circuit}
+                    onChange={(e) =>
+                      setForm((prev) => ({
+                        ...prev,
+                        circuit: e.target.value as TypeCircuit,
+                      }))
+                    }
+                    className="w-full rounded-md border border-gray-300 px-2 py-1
                          dark:border-gray-700 dark:bg-gray-800 dark:text-white"
-              >
-                <option value="eclairage">Eclairage</option>
-                <option value="prises">Prises</option>
-                <option value="mixte">Mixte</option>
-                <option value="specifique">Specifique</option>
-              </select>
-            </label>
+                  >
+                    <option value="eclairage">Eclairage</option>
+                    <option value="prises">Prises</option>
+                    <option value="mixte">Mixte</option>
+                    <option value="specifique">Specifique</option>
+                  </select>
+                </label>
+              </div>
+            </section>
+
+            {resultat ? (
+              <section className="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
+                <h2 className="mb-3 text-xl font-semibold">Résultat</h2>
+
+                {/* Disjoncteur conseillé — mis en avant */}
+                <div className="mb-4 rounded-xl border-2 border-blue-500 bg-blue-50 px-5 py-4 dark:bg-blue-950 dark:border-blue-400">
+                  <p className="text-xs font-semibold uppercase tracking-widest text-blue-500 dark:text-blue-400 mb-1">
+                    Disjoncteur conseillé
+                  </p>
+                  <p className="text-4xl font-extrabold text-blue-700 dark:text-blue-300 leading-none">
+                    {resultat.disjoncteurConseilleA} A
+                  </p>
+                  <p className="mt-1 text-xs text-blue-500 dark:text-blue-400">
+                    Limite RGIE : {resultat.disjoncteurMaxRgieA} A
+                  </p>
+                </div>
+
+                {/* Autres métriques */}
+                <div className="grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] gap-3">
+                  <div className="rounded-lg bg-gray-50 dark:bg-gray-800 px-4 py-3">
+                    <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">
+                      Intensité calculée
+                    </p>
+                    <p className="text-lg font-bold">
+                      {resultat.intensiteCalculeeA.toFixed(2)} A
+                    </p>
+                  </div>
+
+                  <div className="rounded-lg bg-gray-50 dark:bg-gray-800 px-4 py-3">
+                    <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">
+                      Chute de tension
+                    </p>
+                    <p className="text-lg font-bold">
+                      {resultat.chuteTensionV.toFixed(2)} V
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      {resultat.chuteTensionPourcent.toFixed(2)} %
+                    </p>
+                  </div>
+
+                  <div
+                    className={`rounded-lg px-4 py-3 ${resultat.conforme ? "bg-green-50 dark:bg-green-950" : "bg-red-50 dark:bg-red-950"}`}
+                  >
+                    <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">
+                      Conformité RGIE
+                    </p>
+                    <p
+                      className={`text-lg font-bold ${resultat.conforme ? "text-green-700 dark:text-green-300" : "text-red-700 dark:text-red-300"}`}
+                    >
+                      {resultat.conforme ? "✓ Conforme" : "✕ Non conforme"}
+                    </p>
+                  </div>
+                </div>
+              </section>
+            ) : null}
           </div>
-        </section>
-
-        {resultat ? (
-          <section className="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
-            <h2 className="mb-3 text-xl font-semibold">Résultat</h2>
-
-            {/* Disjoncteur conseillé — mis en avant */}
-            <div className="mb-4 rounded-xl border-2 border-blue-500 bg-blue-50 px-5 py-4 dark:bg-blue-950 dark:border-blue-400">
-              <p className="text-xs font-semibold uppercase tracking-widest text-blue-500 dark:text-blue-400 mb-1">
-                Disjoncteur conseillé
-              </p>
-              <p className="text-4xl font-extrabold text-blue-700 dark:text-blue-300 leading-none">
-                {resultat.disjoncteurConseilleA} A
-              </p>
-              <p className="mt-1 text-xs text-blue-500 dark:text-blue-400">
-                Limite RGIE : {resultat.disjoncteurMaxRgieA} A
-              </p>
-            </div>
-
-            {/* Autres métriques */}
-            <div className="grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] gap-3">
-              <div className="rounded-lg bg-gray-50 dark:bg-gray-800 px-4 py-3">
-                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">
-                  Intensité calculée
-                </p>
-                <p className="text-lg font-bold">
-                  {resultat.intensiteCalculeeA.toFixed(2)} A
-                </p>
-              </div>
-
-              <div className="rounded-lg bg-gray-50 dark:bg-gray-800 px-4 py-3">
-                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">
-                  Chute de tension
-                </p>
-                <p className="text-lg font-bold">
-                  {resultat.chuteTensionV.toFixed(2)} V
-                </p>
-                <p className="text-xs text-gray-500">
-                  {resultat.chuteTensionPourcent.toFixed(2)} %
-                </p>
-              </div>
-
-              <div
-                className={`rounded-lg px-4 py-3 ${resultat.conforme ? "bg-green-50 dark:bg-green-950" : "bg-red-50 dark:bg-red-950"}`}
-              >
-                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">
-                  Conformité RGIE
-                </p>
-                <p
-                  className={`text-lg font-bold ${resultat.conforme ? "text-green-700 dark:text-green-300" : "text-red-700 dark:text-red-300"}`}
-                >
-                  {resultat.conforme ? "✓ Conforme" : "✕ Non conforme"}
-                </p>
-              </div>
-            </div>
-          </section>
-        ) : null}
+        </div>
       </div>
     </main>
   );

@@ -321,47 +321,55 @@ export default function DiagnosticPage() {
       </header>
 
       {/* ── Content ── */}
-      <div className="flex-1 flex flex-col gap-5 px-4 py-6 w-full max-w-3xl mx-auto">
-        <ImageMenu
-          items={MAIN_MENU_ITEMS}
-          delayStartMs={120}
-          delayStepMs={90}
-        />
-        <ProgressBar done={history.length} total={history.length + 3} />
-        <button
-          onClick={restart}
-          className="self-end text-xs transition-colors
-                     text-gray-400 hover:text-gray-700
-                     dark:text-gray-500 dark:hover:text-white"
-        >
-          Recommencer
-        </button>
+      <div className="flex-1 w-full max-w-6xl mx-auto px-4 py-6">
+        <div className="grid gap-5 items-start md:grid-cols-[14rem_minmax(0,1fr)]">
+          <aside className="md:sticky md:top-4">
+            <ImageMenu
+              items={MAIN_MENU_ITEMS}
+              delayStartMs={120}
+              delayStepMs={90}
+              orientation="vertical"
+            />
+          </aside>
 
-        <HistoryList history={history} onJump={jumpTo} />
-
-        {node.type === "question" ? (
-          <QuestionCard node={node} onAnswer={answer} />
-        ) : (
-          <ResultCard node={node} />
-        )}
-
-        {/* ── Footer (result only) ── */}
-        {isResult && (
-          <div className="flex flex-col items-center gap-4 mt-2">
-            <p className="text-sm text-gray-400 dark:text-gray-600">
-              Diagnostic en {history.length} étape
-              {history.length > 1 ? "s" : ""}
-            </p>
+          <div className="flex flex-col gap-5 min-w-0">
+            <ProgressBar done={history.length} total={history.length + 3} />
             <button
               onClick={restart}
-              className="w-full rounded-xl font-semibold py-3.5 active:scale-95 transition-all
+              className="self-end text-xs transition-colors
+                     text-gray-400 hover:text-gray-700
+                     dark:text-gray-500 dark:hover:text-white"
+            >
+              Recommencer
+            </button>
+
+            <HistoryList history={history} onJump={jumpTo} />
+
+            {node.type === "question" ? (
+              <QuestionCard node={node} onAnswer={answer} />
+            ) : (
+              <ResultCard node={node} />
+            )}
+
+            {/* ── Footer (result only) ── */}
+            {isResult && (
+              <div className="flex flex-col items-center gap-4 mt-2">
+                <p className="text-sm text-gray-400 dark:text-gray-600">
+                  Diagnostic en {history.length} étape
+                  {history.length > 1 ? "s" : ""}
+                </p>
+                <button
+                  onClick={restart}
+                  className="w-full rounded-xl font-semibold py-3.5 active:scale-95 transition-all
                          bg-gray-200 hover:bg-gray-300 text-gray-800
                          dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white"
-            >
-              Nouveau diagnostic
-            </button>
+                >
+                  Nouveau diagnostic
+                </button>
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </main>
   );

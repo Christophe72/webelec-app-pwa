@@ -22,11 +22,25 @@
   color: #ededed;
 }
 
-.container {
+.layout {
   margin: 0 auto;
   width: 100%;
-  max-width: 52rem;
-  padding: 2rem 1rem 3rem;
+  max-width: 78rem;
+  padding: 1.5rem 1rem 3rem;
+  display: grid;
+  grid-template-columns: 13.5rem minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.sidebar {
+  position: sticky;
+  top: 1rem;
+  padding-top: 3.25rem;
+}
+
+.container {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
@@ -34,6 +48,18 @@
 
 .menuWrap {
   width: 100%;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .sidebar {
+    position: static;
+    padding-top: 0;
+  }
 }
 
 /* ── Titre ─────────────────────────────────────────────── */

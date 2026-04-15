@@ -11,6 +11,7 @@ export interface SectionInput {
   tensionV: number;
   reseau: TypeReseau;
   longueurCableM: number;
+  temperatureC: number;
   circuit: TypeCircuit;
   modePose: ModePose;
 }

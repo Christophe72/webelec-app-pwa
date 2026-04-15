@@ -24,6 +24,7 @@ export interface InstallationInput {
   puissanceW: number;
   tensionV: number;
   longueurCableM: number;
+  temperatureC: number;
   reseau: TypeReseau;
   sectionMm2: SectionCable;
   circuit: TypeCircuit;

@@ -25,12 +25,12 @@ export const MAIN_MENU_ITEMS: ImageMenuItem[] = [
     imageSrc: "/menu/qcm.svg",
     imageAlt: "Icône questionnaire",
   },
-  {
-    href: "/plans",
-    label: "Plans",
-    imageSrc: "/menu/plans.svg",
-    imageAlt: "Icône plans électriques",
-  },
+  // {
+  //   href: "/visite",
+  //   label: "Visite de chantier",
+  //   imageSrc: "/menu/visite.svg",
+  //   imageAlt: "Icône visite de chantier",
+  // },
   {
     href: "/",
     label: "Quitter",

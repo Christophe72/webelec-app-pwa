@@ -28,6 +28,7 @@ export function evaluerInstallation(
     input.tensionV,
     input.longueurCableM,
     input.sectionMm2,
+    input.temperatureC,
     input.reseau,
   );
   const limiteChutePourcent = input.circuit === "eclairage" ? 3 : 5;

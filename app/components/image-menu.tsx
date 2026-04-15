@@ -14,15 +14,22 @@ type ImageMenuProps = {
   items: ImageMenuItem[];
   delayStartMs?: number;
   delayStepMs?: number;
+  orientation?: "grid" | "vertical";
 };
 
 export function ImageMenu({
   items,
   delayStartMs = 250,
   delayStepMs = 200,
+  orientation = "grid",
 }: ImageMenuProps) {
+  const navClassName =
+    orientation === "vertical"
+      ? `${styles.menuGrid} ${styles.menuVertical}`
+      : styles.menuGrid;
+
   return (
-    <nav className={styles.menuGrid} aria-label="Menu principal">
+    <nav className={navClassName} aria-label="Menu principal">
       {items.map((item, index) => (
         <Link
           key={item.href}
