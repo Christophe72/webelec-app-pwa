@@ -325,12 +325,22 @@ export default function QcmPage() {
                       <span className={styles.recapText}>
                         <strong>Q{i + 1}.</strong> {q.question}
                         <br />
-                        <small>
-                          Votre réponse: {userAnswer} — Réponse attendue:{" "}
-                          {q.choices[q.answer]}
+                        <small className={styles.recapAnswers}>
+                          <span className={styles.recapUserAnswer}>
+                            Votre réponse: {userAnswer}
+                          </span>
+                          <span className={styles.recapExpectedAnswer}>
+                            Réponse attendue: {q.choices[q.answer]}
+                          </span>
                         </small>
-                        <br />
-                        <em>Explication: {q.explication}</em>
+                        <div className={styles.recapExplanation}>
+                          <span className={styles.recapExplanationLabel}>
+                            Explication
+                          </span>
+                          <p className={styles.recapExplanationText}>
+                            {q.explication}
+                          </p>
+                        </div>
                       </span>
                     </div>
                   );

@@ -19,9 +19,7 @@ export type QuestionNode = {
 };
 
 export type DiagNode = QuestionNode | ResultNode;
-
 const nodes: DiagNode[] = [
-  // ── ROOT ─────────────────────────────────────────────────────────────────
   {
     type: "question",
     id: "root",
@@ -31,11 +29,11 @@ const nodes: DiagNode[] = [
     no: "q_partiel",
   },
 
-  // ── BRANCHE : PANNE GÉNÉRALE ─────────────────────────────────────────────
   {
     type: "question",
     id: "q_panne_generale",
-    question: "Les voisins ou d'autres logements sont-ils également sans courant ?",
+    question:
+      "Les voisins ou d'autres logements sont-ils également sans courant ?",
     yes: "r_reseau_ores",
     no: "q_disjoncteur_principal",
   },
@@ -45,16 +43,18 @@ const nodes: DiagNode[] = [
     title: "Panne réseau de distribution",
     body: "La coupure provient du réseau public (ORES, Sibelga, RESA…). Votre installation est probablement saine.",
     actions: [
-      "Contacter le gestionnaire de réseau : ORES 078 78 78 20 / Sibelga 02 549 43 43",
-      "Ne pas tenter de manipuler le compteur ou les scellés.",
-      "Patienter la remise en service.",
+      "Vérifier si la panne touche aussi le voisinage ou les parties communes.",
+      "Contacter le gestionnaire de réseau pour confirmation.",
+      "Ne jamais manipuler le compteur ni les scellés.",
+      "Attendre le rétablissement de l’alimentation.",
     ],
     severity: "info",
   },
   {
     type: "question",
     id: "q_disjoncteur_principal",
-    question: "Le disjoncteur général (ou compteur) est-il en position déclenché (OFF) ?",
+    question:
+      "Le disjoncteur général (ou compteur) est-il en position déclenché (OFF) ?",
     hint: "Regardez le tableau principal : levier tombé, bouton rouge sorti, voyant rouge.",
     yes: "q_reenclenche_general",
     no: "q_differentiel_general",
@@ -62,7 +62,8 @@ const nodes: DiagNode[] = [
   {
     type: "question",
     id: "q_reenclenche_general",
-    question: "Après réenclenchement du disjoncteur général, reste-t-il en position ON ?",
+    question:
+      "Après réenclenchement du disjoncteur général, reste-t-il en position ON ?",
     yes: "r_surcharge_generale",
     no: "r_cc_general",
   },
@@ -72,9 +73,10 @@ const nodes: DiagNode[] = [
     title: "Surcharge ponctuelle",
     body: "Le disjoncteur a déclenché suite à une surcharge ou un pic de courant. Il est à nouveau en service.",
     actions: [
-      "Identifier l'appareil à l'origine (démarrage moteur, four + chauffe-eau simultanés, etc.).",
-      "Répartir les charges sur d'autres circuits si possible.",
-      "Si le déclenchement se répète, faire contrôler le calibre du disjoncteur par un électricien.",
+      "Identifier les appareils qui fonctionnaient au moment du déclenchement.",
+      "Éviter de relancer en même temps les gros consommateurs.",
+      "Surveiller si le déclenchement se reproduit dans les heures ou jours suivants.",
+      "Faire contrôler l’installation si le problème revient.",
     ],
     severity: "ok",
   },
@@ -84,9 +86,10 @@ const nodes: DiagNode[] = [
     title: "Court-circuit ou défaut grave — Danger",
     body: "Le disjoncteur général refuse de rester enclenché. Il y a probablement un court-circuit sérieux ou un défaut d'isolement majeur.",
     actions: [
-      "Ne pas forcer le réenclenchement.",
-      "Appeler immédiatement un électricien agréé.",
-      "Vérifier qu'aucun appareil ne chauffe ou ne dégage de fumée.",
+      "Ne pas insister sur le réenclenchement.",
+      "Laisser l’installation hors tension.",
+      "Vérifier à distance s’il y a odeur, fumée ou échauffement anormal.",
+      "Faire intervenir un électricien sans délai.",
     ],
     severity: "danger",
   },
@@ -101,7 +104,8 @@ const nodes: DiagNode[] = [
   {
     type: "question",
     id: "q_diff_reenclenche",
-    question: "Après appui sur le levier du différentiel, reste-t-il enclenché ?",
+    question:
+      "Après appui sur le levier du différentiel, reste-t-il enclenché ?",
     yes: "r_diff_ok",
     no: "q_isole_diff",
   },
@@ -111,16 +115,18 @@ const nodes: DiagNode[] = [
     title: "Différentiel réenclenché",
     body: "Le différentiel s'est réenclenché. Il avait probablement déclenché sur un courant de fuite transitoire.",
     actions: [
-      "Tester le bouton TEST pour vérifier son bon fonctionnement.",
-      "Surveiller : si le déclenchement se répète, faire rechercher une fuite d'isolement.",
-      "Débrancher les appareils humides suspects (lave-linge, lave-vaisselle, chauffe-eau).",
+      "Réenclencher et vérifier que le courant revient normalement.",
+      "Débrancher par précaution les appareils humides ou suspects.",
+      "Surveiller si le différentiel retombe à nouveau.",
+      "Faire contrôler une fuite d’isolement si le défaut se répète.",
     ],
     severity: "ok",
   },
   {
     type: "question",
     id: "q_isole_diff",
-    question: "En débranchant TOUS les appareils, le différentiel reste-t-il enclenché ?",
+    question:
+      "En débranchant TOUS les appareils, le différentiel reste-t-il enclenché ?",
     yes: "r_appareil_defectueux_diff",
     no: "r_fuite_cablage",
   },
@@ -130,9 +136,10 @@ const nodes: DiagNode[] = [
     title: "Appareil défectueux provoquant une fuite",
     body: "Un ou plusieurs appareils présentent un courant de fuite supérieur à 30 mA.",
     actions: [
-      "Rebrancher les appareils un par un pour identifier le coupable.",
-      "Ne plus utiliser l'appareil défectueux jusqu'à réparation ou remplacement.",
-      "Si le problème persiste malgré tout, faire contrôler l'installation.",
+      "Laisser tous les appareils débranchés.",
+      "Rebrancher les appareils un par un.",
+      "Identifier celui qui fait retomber le différentiel.",
+      "Retirer l’appareil suspect du service jusqu’à réparation ou remplacement.",
     ],
     severity: "warning",
   },
@@ -142,9 +149,10 @@ const nodes: DiagNode[] = [
     title: "Défaut d'isolement sur le câblage",
     body: "Même sans appareil branché, le différentiel déclenche : la fuite est dans le câblage fixe.",
     actions: [
-      "Ne pas utiliser l'installation.",
-      "Appeler un électricien agréé pour une mesure d'isolement (mégohmètre).",
-      "Cause possible : câble endommagé, humidité, rongeurs.",
+      "Laisser le circuit ou l’installation hors tension.",
+      "Ne plus utiliser les prises ou points concernés.",
+      "Faire réaliser une mesure d’isolement par un électricien.",
+      "Signaler si le problème est apparu après humidité, travaux ou perçage.",
     ],
     severity: "danger",
   },
@@ -154,17 +162,19 @@ const nodes: DiagNode[] = [
     title: "Problème côté compteur ou réseau",
     body: "Le tableau semble en ordre mais il n'y a pas de courant. Le problème se situe probablement en amont (compteur, branchement réseau).",
     actions: [
-      "Contacter le gestionnaire de réseau : ORES 078 78 78 20 / Sibelga 02 549 43 43",
-      "Ne jamais manipuler le compteur (propriété du gestionnaire).",
+      "Vérifier que tous les appareils du tableau paraissent en position normale.",
+      "Contacter le gestionnaire de réseau pour signaler l’absence d’alimentation.",
+      "Ne pas ouvrir ni manipuler le compteur.",
+      "Attendre les consignes ou l’intervention du gestionnaire.",
     ],
     severity: "info",
   },
 
-  // ── BRANCHE : PANNE PARTIELLE ────────────────────────────────────────────
   {
     type: "question",
     id: "q_partiel",
-    question: "La panne concerne-t-elle un seul circuit (ex. une pièce, un groupe de prises) ?",
+    question:
+      "La panne concerne-t-elle un seul circuit (ex. une pièce, un groupe de prises) ?",
     yes: "q_disjoncteur_circuit",
     no: "q_type_panne",
   },
@@ -180,14 +190,16 @@ const nodes: DiagNode[] = [
   {
     type: "question",
     id: "q_diff_circuit",
-    question: "Le différentiel associé à ce circuit a-t-il également déclenché ?",
+    question:
+      "Le différentiel associé à ce circuit a-t-il également déclenché ?",
     yes: "q_isoler_circuit",
     no: "q_reenclenche_circuit",
   },
   {
     type: "question",
     id: "q_isoler_circuit",
-    question: "En débranchant tous les appareils du circuit, le différentiel reste-t-il enclenché ?",
+    question:
+      "En débranchant tous les appareils du circuit, le différentiel reste-t-il enclenché ?",
     yes: "r_appareil_fuite_circuit",
     no: "r_fuite_cablage_circuit",
   },
@@ -197,9 +209,10 @@ const nodes: DiagNode[] = [
     title: "Appareil en fuite sur ce circuit",
     body: "Un appareil branché sur ce circuit présente un courant de fuite.",
     actions: [
-      "Rebrancher les appareils un par un pour identifier le coupable.",
-      "Mettre de côté l'appareil défectueux.",
-      "Vérifier notamment : lave-linge, lave-vaisselle, chauffe-eau électrique, convecteurs humides.",
+      "Débrancher tous les appareils du circuit.",
+      "Réenclencher la protection.",
+      "Rebrancher les appareils un par un.",
+      "Mettre de côté l’appareil qui provoque le déclenchement.",
     ],
     severity: "warning",
   },
@@ -209,16 +222,18 @@ const nodes: DiagNode[] = [
     title: "Défaut d'isolement sur ce circuit",
     body: "La fuite est dans le câblage fixe de ce circuit (même sans appareil branché).",
     actions: [
-      "Ne pas utiliser ce circuit.",
-      "Faire mesurer l'isolement par un électricien agréé.",
-      "Vérifier l'absence d'humidité, de travaux récents, de câble pincé.",
+      "Laisser ce circuit coupé.",
+      "Ne plus utiliser les prises, luminaires ou appareils reliés à ce départ.",
+      "Faire contrôler le câblage par mesure d’isolement.",
+      "Préciser s’il y a eu humidité, fixation murale ou travaux récents.",
     ],
     severity: "danger",
   },
   {
     type: "question",
     id: "q_reenclenche_circuit",
-    question: "Après réenclenchement, le disjoncteur de circuit reste-t-il en ON ?",
+    question:
+      "Après réenclenchement, le disjoncteur de circuit reste-t-il en ON ?",
     yes: "r_surcharge_circuit",
     no: "r_cc_circuit",
   },
@@ -228,9 +243,10 @@ const nodes: DiagNode[] = [
     title: "Surcharge sur ce circuit",
     body: "Le circuit était surchargé (trop d'appareils simultanément ou appareil défectueux).",
     actions: [
-      "Réduire la charge sur ce circuit.",
-      "Vérifier le calibre du disjoncteur vs la section du câble (RGIE Art. 4.3).",
-      "Si récurrent, envisager la création d'un circuit supplémentaire.",
+      "Débrancher une partie des appareils du circuit.",
+      "Éviter l’utilisation simultanée des gros consommateurs sur ce départ.",
+      "Tester à nouveau avec une charge réduite.",
+      "Prévoir un contrôle si la surcharge revient régulièrement.",
     ],
     severity: "ok",
   },
@@ -240,9 +256,10 @@ const nodes: DiagNode[] = [
     title: "Court-circuit sur ce circuit",
     body: "Le disjoncteur refuse de rester enclenché : court-circuit probable.",
     actions: [
-      "Débrancher tous les appareils du circuit.",
-      "Réessayer — si ça tient, un appareil est en court-circuit interne.",
-      "Si le disjoncteur saute encore sans appareil : câblage défectueux, appeler un électricien.",
+      "Débrancher tous les appareils reliés au circuit.",
+      "Réessayer une seule fois le réenclenchement.",
+      "Si le disjoncteur retombe encore, laisser le circuit coupé.",
+      "Faire rechercher le défaut sur le câblage ou l’appareillage.",
     ],
     severity: "danger",
   },
@@ -267,9 +284,10 @@ const nodes: DiagNode[] = [
     title: "Fusible fondu",
     body: "Un fusible a sauté sur ce circuit. Il protège contre les surcharges et courts-circuits.",
     actions: [
-      "Remplacer par un fusible de même calibre — JAMAIS supérieur.",
-      "Si le fusible saute à nouveau : court-circuit ou surcharge persistante, appeler un électricien.",
-      "Envisager la modernisation du tableau (disjoncteurs + différentiels, RGIE Art. 6).",
+      "Remplacer uniquement par un fusible de même calibre.",
+      "Ne jamais monter un calibre supérieur.",
+      "Remettre le circuit en service et observer le comportement.",
+      "Si le fusible saute à nouveau, faire rechercher surcharge ou court-circuit.",
     ],
     severity: "warning",
   },
@@ -279,13 +297,14 @@ const nodes: DiagNode[] = [
     title: "Vérifier les connexions au tableau",
     body: "Le disjoncteur n'est pas déclenché mais le circuit ne fonctionne pas : connexion desserrée ou coupure de câble.",
     actions: [
-      "Faire vérifier les bornes du disjoncteur par un électricien (risque d'arc électrique).",
-      "Ne pas intervenir soi-même sur le tableau sous tension.",
+      "Ne pas intervenir dans le tableau sous tension.",
+      "Faire contrôler les serrages et connexions par un électricien.",
+      "Signaler précisément quelle zone ou quel usage est concerné.",
+      "Demander aussi un contrôle des boîtes et dérivations si nécessaire.",
     ],
     severity: "warning",
   },
 
-  // ── BRANCHE : TYPE DE PANNE (non général, non circuit unique) ────────────
   {
     type: "question",
     id: "q_type_panne",
@@ -294,11 +313,11 @@ const nodes: DiagNode[] = [
     no: "q_prise",
   },
 
-  // ── ÉCLAIRAGE ─────────────────────────────────────────────────────────────
   {
     type: "question",
     id: "q_eclairage",
-    question: "L'ampoule est-elle grillée (filament cassé, noircie, LED éteinte) ?",
+    question:
+      "L'ampoule est-elle grillée (filament cassé, noircie, LED éteinte) ?",
     yes: "r_remplacer_ampoule",
     no: "q_interrupteur",
   },
@@ -308,16 +327,18 @@ const nodes: DiagNode[] = [
     title: "Ampoule hors service",
     body: "L'ampoule est défectueuse.",
     actions: [
-      "Remplacer l'ampoule par une de même culot et puissance adaptée au luminaire.",
-      "Préférer les LED (économie d'énergie, longue durée de vie).",
-      "Si la nouvelle ampoule ne fonctionne pas non plus, passer à la suite du diagnostic.",
+      "Remplacer l’ampoule par un modèle compatible.",
+      "Vérifier le bon culot et la bonne tension.",
+      "Tester à nouveau le point lumineux.",
+      "Si cela ne fonctionne toujours pas, poursuivre le diagnostic.",
     ],
     severity: "ok",
   },
   {
     type: "question",
     id: "q_interrupteur",
-    question: "L'interrupteur clique-t-il normalement et sa DEL (si présente) fonctionne-t-elle ?",
+    question:
+      "L'interrupteur clique-t-il normalement et sa DEL (si présente) fonctionne-t-elle ?",
     yes: "q_luminaire_connexion",
     no: "r_interrupteur_hs",
   },
@@ -327,9 +348,10 @@ const nodes: DiagNode[] = [
     title: "Interrupteur défectueux",
     body: "L'interrupteur ne commute plus correctement.",
     actions: [
-      "Couper le disjoncteur du circuit avant toute intervention.",
-      "Remplacer l'interrupteur (vérifier la compatibilité variateur/LED si applicable).",
-      "Faire réaliser l'opération par un électricien si vous n'êtes pas qualifié.",
+      "Couper le circuit concerné avant toute intervention.",
+      "Ne pas démonter l’appareillage sous tension.",
+      "Remplacer l’interrupteur par un modèle équivalent.",
+      "Faire intervenir un électricien si vous n’êtes pas qualifié.",
     ],
     severity: "warning",
   },
@@ -346,9 +368,10 @@ const nodes: DiagNode[] = [
     title: "Vérifier le câblage du luminaire",
     body: "Suite à une installation ou un déplacement, une connexion peut être mal serrée ou inversée.",
     actions: [
-      "Couper le disjoncteur avant d'ouvrir le luminaire.",
-      "Vérifier phase (brun), neutre (bleu), terre (vert/jaune) bien serrés dans le bornier.",
-      "S'assurer que le luminaire est compatible avec le câblage existant.",
+      "Couper le disjoncteur du circuit avant ouverture.",
+      "Contrôler les connexions dans le bornier du luminaire.",
+      "Vérifier que les conducteurs sont bien serrés et à la bonne place.",
+      "Tester le luminaire après remise en place.",
     ],
     severity: "warning",
   },
@@ -358,13 +381,14 @@ const nodes: DiagNode[] = [
     title: "Défaut sur le circuit d'éclairage",
     body: "Ampoule et interrupteur semblent corrects : le problème vient du câblage du circuit.",
     actions: [
-      "Vérifier le disjoncteur dédié à l'éclairage.",
-      "Faire réaliser un diagnostic par un électricien agréé.",
+      "Vérifier si d’autres points lumineux du même circuit fonctionnent.",
+      "Repérer le disjoncteur ou le départ concerné.",
+      "Laisser hors tension en cas de doute sur le câblage.",
+      "Faire contrôler le circuit par un électricien.",
     ],
     severity: "warning",
   },
 
-  // ── PRISES ────────────────────────────────────────────────────────────────
   {
     type: "question",
     id: "q_prise",
@@ -375,7 +399,8 @@ const nodes: DiagNode[] = [
   {
     type: "question",
     id: "q_prise_visible",
-    question: "La prise présente-t-elle des dommages visibles (brûlures, plastique fondu, traces noires) ?",
+    question:
+      "La prise présente-t-elle des dommages visibles (brûlures, plastique fondu, traces noires) ?",
     yes: "r_prise_dangereuse",
     no: "q_prise_testeur",
   },
@@ -385,17 +410,18 @@ const nodes: DiagNode[] = [
     title: "Prise endommagée — Danger immédiat",
     body: "Une prise brûlée ou fondue indique un arc électrique ou une surchauffe grave.",
     actions: [
-      "Ne jamais utiliser cette prise.",
-      "Couper le disjoncteur de ce circuit immédiatement.",
-      "Appeler un électricien agréé d'urgence.",
-      "Vérifier l'absence de départ de feu dans le mur.",
+      "Ne plus utiliser cette prise immédiatement.",
+      "Couper le circuit concerné au tableau.",
+      "Vérifier l’absence d’odeur, de fumée ou d’échauffement du mur.",
+      "Faire remplacer la prise sans délai.",
     ],
     severity: "danger",
   },
   {
     type: "question",
     id: "q_prise_testeur",
-    question: "Avec un testeur de prise, la tension entre phase et neutre est-elle bien de ~230 V ?",
+    question:
+      "Avec un testeur de prise, la tension entre phase et neutre est-elle bien de ~230 V ?",
     hint: "Utilisez un testeur de tension ou un appareil connu fonctionnel.",
     yes: "r_prise_ok_appareil",
     no: "q_terre_prise",
@@ -406,16 +432,18 @@ const nodes: DiagNode[] = [
     title: "La prise est sous tension — vérifier l'appareil",
     body: "La prise délivre bien 230 V. Le problème vient probablement de l'appareil branché.",
     actions: [
-      "Tester l'appareil sur une autre prise fonctionnelle.",
-      "Si l'appareil ne fonctionne toujours pas, il est défectueux.",
-      "Vérifier le fusible interne de la fiche (sur certains appareils).",
+      "Tester l’appareil sur une autre prise connue comme fonctionnelle.",
+      "Tester un autre appareil sur cette prise.",
+      "Écarter l’appareil s’il ne fonctionne nulle part.",
+      "Vérifier aussi l’état du cordon ou de la fiche.",
     ],
     severity: "ok",
   },
   {
     type: "question",
     id: "q_terre_prise",
-    question: "Y a-t-il tension entre phase et terre (testeur phase/terre positif) ?",
+    question:
+      "Y a-t-il tension entre phase et terre (testeur phase/terre positif) ?",
     yes: "r_neutre_coupure",
     no: "r_phase_absente",
   },
@@ -425,9 +453,10 @@ const nodes: DiagNode[] = [
     title: "Coupure du conducteur neutre",
     body: "La phase est présente mais le neutre est coupé. Situation potentiellement dangereuse (surtension possible).",
     actions: [
-      "Ne pas utiliser le circuit.",
-      "Faire réparer par un électricien agréé — risque de surtension sur d'autres circuits.",
-      "Cause fréquente : borne desserrée au tableau ou dans une boîte de dérivation.",
+      "Ne plus utiliser ce circuit.",
+      "Débrancher les appareils sensibles reliés à cette ligne.",
+      "Laisser le dépannage à un électricien.",
+      "Signaler qu’une coupure de neutre est suspectée.",
     ],
     severity: "danger",
   },
@@ -437,18 +466,19 @@ const nodes: DiagNode[] = [
     title: "Phase absente sur la prise",
     body: "Ni la phase ni la tension ne sont présentes : le circuit est coupé en amont.",
     actions: [
-      "Vérifier le disjoncteur correspondant au tableau.",
-      "Rechercher une boîte de dérivation intermédiaire avec connexion défectueuse.",
-      "Faire diagnostiquer par un électricien.",
+      "Vérifier le départ correspondant au tableau.",
+      "Identifier si une seule prise ou toute une ligne est concernée.",
+      "Faire contrôler une éventuelle coupure ou dérivation défectueuse.",
+      "Ne pas démonter la prise sous tension ni à l’aveugle.",
     ],
     severity: "warning",
   },
 
-  // ── AUTRE ─────────────────────────────────────────────────────────────────
   {
     type: "question",
     id: "q_autre_panne",
-    question: "La panne est-elle apparue après des travaux ou une intervention récente ?",
+    question:
+      "La panne est-elle apparue après des travaux ou une intervention récente ?",
     yes: "r_apres_travaux",
     no: "r_diagnostic_complet",
   },
@@ -458,9 +488,10 @@ const nodes: DiagNode[] = [
     title: "Panne post-travaux",
     body: "La panne est survenue après une intervention : connexion oubliée, câble pincé ou court-circuit accidentel.",
     actions: [
-      "Contacter l'entreprise ayant réalisé les travaux.",
-      "Vérifier toutes les boîtes de dérivation ouvertes lors des travaux.",
-      "Faire réaliser un contrôle de conformité RGIE si l'installation a été modifiée.",
+      "Contacter d’abord l’entreprise ou la personne ayant réalisé l’intervention.",
+      "Ne pas refermer ou modifier plusieurs points au hasard.",
+      "Lister ce qui a été touché pendant les travaux.",
+      "Demander un contrôle ciblé des zones modifiées.",
     ],
     severity: "warning",
   },
@@ -470,16 +501,17 @@ const nodes: DiagNode[] = [
     title: "Diagnostic approfondi nécessaire",
     body: "La panne ne correspond pas aux cas courants. Un diagnostic complet de l'installation est recommandé.",
     actions: [
-      "Faire appel à un électricien agréé pour un diagnostic complet.",
-      "Demander une mesure d'isolement et un contrôle du tableau.",
-      "Si l'installation a plus de 25 ans, envisager un contrôle de conformité RGIE.",
+      "Faire intervenir un électricien pour un contrôle méthodique.",
+      "Décrire précisément les symptômes observés.",
+      "Signaler si la panne est aléatoire, partielle ou liée à certains usages.",
+      "Demander un contrôle du tableau, des protections et de l’isolement si nécessaire.",
     ],
     severity: "info",
   },
 ];
 
 export const TREE: Record<string, DiagNode> = Object.fromEntries(
-  nodes.map((n) => [n.id, n])
+  nodes.map((n) => [n.id, n]),
 );
 
 export const ROOT_ID = "root";

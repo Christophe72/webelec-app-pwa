@@ -11,8 +11,8 @@ export default function Home() {
         <Image
           src="/icon-512x512.png"
           alt="WebElec Logo"
-          width={384}
-          height={384}
+          width={450}
+          height={450}
           className={styles.logoImg}
           priority
         />
